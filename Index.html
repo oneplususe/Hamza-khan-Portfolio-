@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio | Hamza Khan</title>
     
+    <!-- Google Site Verification -->
+    <meta name="google-site-verification" content="ljZEisZ-k67olLPD4vE13031C7ZW7WCVJ8xXulesBRs" />
+    
     <!-- ====== FONTS ====== -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -888,7 +891,6 @@
                     </div>
                 </div>
             </div>
-        </section>
 
         <!-- ====== CONTACT SECTION ====== -->
         <section class="section" id="contact">
@@ -1106,7 +1108,7 @@
             const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
             
             // Format the message
-            const text = `New message from portfolio website!\n\nName: ${name}\nEmail: ${email}\nMessage: ${message}`;
+            const text = `New message from portfolio website!\n\nName: ${name}\nEmail: <a href="mailto:thekgraphics@gmail.com">${email}</a>\nMessage: ${message}`;
             
             // Show success message immediately (before sending to Telegram)
             const successMessage = document.getElementById('successMessage');
