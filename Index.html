@@ -893,7 +893,7 @@
 
         <!-- ====== CONTACT SECTION ====== -->
         <section class="section" id="contact">
-            <h2 class="section-title" data-aos="fade-up" data-aos-duration="0">Contact me</h2>
+            <h2 class="section-title" data-aos="fade-up">Contact me</h2>
             
             <!-- ====== SOCIAL CONTACT OPTIONS ====== -->
             <div class="social-contact-options" data-aos="fade-up" data-aos-duration="0">
@@ -915,12 +915,15 @@
                 <h3>Let's collaborate!</h3>
                 <p>Contact me to discuss your web development and graphics designs needs or just to say hello.</p>
             </div>
-            <form class="contact-form" data-aos="fade-up" data-aos-duration="0" id="contactForm">
-                <input type="text" id="name" placeholder="Your Name" required>
-                <input type="email" id="email" placeholder="Your Email" required>
-                <textarea rows="7" id="message" placeholder="Your Message" required></textarea>
+            
+            <!-- YE LINE CHANGE KI HAI -->
+            <form class="contact-form" data-aos="fade-up" data-aos-duration="0" id="contactForm" action="send_message.php" method="POST">
+                <input type="text" id="name" name="name" placeholder="Your Name" required>
+                <input type="email" id="email" name="email" placeholder="Your Email" required>
+                <textarea rows="7" id="message" name="message" placeholder="Your Message" required></textarea>
                 <button type="submit" class="btn" id="submitBtn">Send Message</button>
             </form>
+            
             <div class="success-message" id="successMessage">
                 Thank you for your message! I'll get back to you soon.
             </div>
@@ -1083,84 +1086,28 @@
             });
         });
 
-        // ====== TELEGRAM BOT INTEGRATION WITH IMMEDIATE FEEDBACK ====== -->
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // Check for status in URL and show appropriate message
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status');
             
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-            
-            // Show loading state
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.classList.add('loading');
-            submitBtn.disabled = true;
-            
-            // Hide any existing messages
-            document.getElementById('successMessage').classList.remove('show');
-            document.getElementById('errorMessage').classList.remove('show');
-            
-            // Telegram Bot API endpoint
-            const botToken = '8045449350:AAHQChcqTeTB3fcxE55kMMffKLUafSNVTG0';
-            const chatId = '7291244998';
-            const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
-            
-            // Format the message
-            const text = `New message from portfolio website!\n\nName: ${name}\nEmail: ${email}\nMessage: ${message}`;
-            
-            // Show success message immediately (before sending to Telegram)
             const successMessage = document.getElementById('successMessage');
-            successMessage.classList.add('show');
+            const errorMessage = document.getElementById('errorMessage');
             
-            // Reset form
-            document.getElementById('contactForm').reset();
-            
-            // Reset button state
-            submitBtn.classList.remove('loading');
-            submitBtn.disabled = false;
-            
-            // Send the message to Telegram (in background)
-            fetch(telegramUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    chat_id: chatId,
-                    text: text,
-                    parse_mode: 'HTML'
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Success is already shown, just log for debugging
-                console.log('Message sent successfully:', data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                
-                // Hide success message and show error message
-                successMessage.classList.remove('show');
-                const errorMessage = document.getElementById('errorMessage');
+            if (status === 'success') {
+                successMessage.classList.add('show');
+                // Hide the message after 5 seconds
+                setTimeout(() => {
+                    successMessage.classList.remove('show');
+                }, 5000);
+            } else if (status === 'error') {
                 errorMessage.classList.add('show');
-                
-                // Hide error message after 5 seconds
+                // Hide the message after 5 seconds
                 setTimeout(() => {
                     errorMessage.classList.remove('show');
                 }, 5000);
-            });
-            
-            // Hide success message after 5 seconds
-            setTimeout(() => {
-                successMessage.classList.remove('show');
-            }, 5000);
-        });
+            }
+        };
     </script>
 </body>
 </html>
